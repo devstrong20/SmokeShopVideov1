@@ -1,0 +1,249 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--<meta content='IE=Edge' http-equiv='X-UA-Compatible' />-->
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+    <style>
+        #video-container {
+            position: absolute;
+            /*background-color: black;*/
+            border: none;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+        }
+
+        .btn {
+            background-color: #EE1A4A;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+            /* Darker background on mouse-over */
+            .btn:hover {
+                background-color: #EE1A4A;
+                font-size: 14px;
+            }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png" id="loadingGif"
+             style=" display: none;
+        margin-left: 30%;
+        margin-top: 10%;
+        margin-right: auto;
+        height: 60%;
+        width: 40%;" />
+    </div>
+    <div id="sleepText">
+        <h1 style=" text-align: center; margin-top: 10%; display: block; background: aliceblue;">App is sleeping . . .</h1>
+    </div>
+    <div id="video-container" style="display:block"></div>
+    <script>
+        //var videoss = window.external.getVideoIds();
+        var options = {
+            width: screen.availWidth -50,
+            height :screen.availHeight -50
+        };
+        var savePlaysarr = [];
+        var respDblist;
+        var arrayVideos = [];
+        var isLoadWindow = 0;
+        var loopIndex = 0;
+        var videotime = [];
+        //alert("New version added");
+        //$(document).ready(function () {
+        //    GetloopVideos();
+        //});
+        var testid;
+        var playMovie = function (player, videos, options) {
+            if (!videos.length) {
+                return false;
+            }
+            var idReplaced = videos.shift();
+            var video = 'https://vimeo.com/video/' + idReplaced;
+            //var video = 'https://player.vimeo.com/video/503530088?h=35e64d6ee0';
+            // alert(video);
+            if (!player) {
+                options.url = video;
+                options.byline = false;
+                options.portrait = false;
+                options.title = false;
+                //console.log(video, 'video*URL');
+                testid = video;
+                player = new Vimeo.Player('video-container', options);
+                player.play();
+
+                //player.getFullscreen().then(function (fullscreen) {
+                //    // fullscreen = whether fullscreen is turned on or off
+                //    alert("inside fl scren");
+                //    options.width= "1600"
+                //}).catch(function (error) {
+                //    // an error occurred
+                //});
+                //  toggleFullScreen();
+
+                player.on('fullscreenchange', function (data) {
+
+                    player.getVideoWidth().then(function (width) {
+                        alert(width);
+                    }).catch(function (err) {
+
+                    })
+                })
+
+                player.on('ended', function () {
+                    playMovie(player, videos, options)
+                })
+            } else {               
+                player.loadVideo({
+                    url: video,
+                    autoplay: 1
+                }).then(function () {
+                    // alert("Playing");
+                    player.play();
+                })
+                    .catch(function (error) {
+                        console.log(testid + '*');
+                        getloopVideos(1);
+                        console.warn(error);
+                    });
+            }
+            player.getEnded(true).then(function (ended) {
+                // `ended` indicates whether the video has ended                
+                if (videos.length == 3) {
+                    
+                    var respDateTime = GetPlaysTime();
+                    videotime.push(respDateTime);
+                    //SavePlays(respDblist);
+                    //document.getElementById('div1').innerHTML = 'length3';
+                }
+                else if (videos.length == 2) {                    
+                    //document.getElementById('div1').innerHTML = 'length2';
+                    var respDateTime = GetPlaysTime();
+                    videotime.push(respDateTime);
+                }
+                else if (videos.length == 1) {
+                    //document.getElementById('div1').innerHTML = 'length1';
+                    var respDateTime = GetPlaysTime();
+                    videotime.push(respDateTime);
+                }
+                else if (videos.length == 0) {
+                    //alert("inside the save play call");
+                    //document.getElementById('div1').innerHTML = 'length0';
+                    isLoadWindow = 1;
+                    loopIndex++;
+                    SavePlays(respDblist);
+                    getloopVideos(1);                    
+                }
+            });
+        }
+
+        function SavePlays(data) {
+            alert("inside save plays");
+            console.log(data);
+            savePlaysarr = [];
+            data.VideosLists.map(function (val, index) {
+                if (val.VSVAccountID != null) {
+                    var obj = {
+                        VSVAccountID: val.VSVAccountID,
+                        VidId: val.VidId,
+                        PlayTimeStamp: videotime[0]
+                    }
+                    videotime.shift();
+                    savePlaysarr.push(obj);
+                }
+            })
+            if (savePlaysarr.length > 0) {
+                var strHistory = JSON.stringify(savePlaysarr);
+                var format = 'sp___' + strHistory;
+                //alert(ccc);
+                window.external.notify(format);
+            }
+        }
+
+        function GetPlaysTime() {
+            var date = new Date();
+            FormatedDate = moment(date).format("yyyy-MM-DDTHH:mm:ss");
+            //alert(FormatedDate);
+            return FormatedDate;
+        }
+
+
+
+        function nn(EntertainmentVideosResponse) {
+            //alert("inside n funtion");
+            arrayVideos = [];
+            respDblist = EntertainmentVideosResponse;
+
+            EntertainmentVideosResponse.VideosLists.map(function (val, index) {
+                arrayVideos.push(val.VideoId);
+            });
+
+            if (EntertainmentVideosResponse.LoopEnded == true) {
+                // alert("loop ended true");
+                loopIndex = 0;
+            }
+            if (isLoadWindow === 1) {
+                arrayVideos.unshift(isLoadWindow);
+                // alert("at load window function is called")
+                playMovie(null, arrayVideos, options);
+            } else {
+                // alert("yahan hn");
+                playMovie(null, arrayVideos, options);
+            }
+        }
+        //playMovie(null, videos, options, startTime, endTime);
+        function getloopVideos(testParam) {
+            window.external.notify(loopIndex.toString());
+        }
+
+        function GetloopVideosReponse(EntertainmentVideosResponsee) {            
+            var EntertainmentVideosResponse = JSON.parse(EntertainmentVideosResponsee);
+            if (EntertainmentVideosResponse
+                && EntertainmentVideosResponse != null
+                && EntertainmentVideosResponse != undefined
+                && EntertainmentVideosResponse != ''
+                && EntertainmentVideosResponse != "-1")
+            {
+                document.getElementById("loadingGif").style.display = "block";
+                document.getElementById("video-container").style.display = "block";
+                document.getElementById("sleepText").style.display = "none";
+                
+                nn(EntertainmentVideosResponse);
+            }
+            else {
+                document.getElementById("sleepText").style.display = "block";
+                document.getElementById("loadingGif").style.display = "none";
+                document.getElementById("video-container").style.display = "none";
+                setTimeout(getloopVideos,60000,1);
+            }
+        }
+
+
+        //GetloopVideos();
+        function Exit() {
+            window.external.Exit();
+        }
+        function openDateScreen() {
+            window.external.openDateScreen();
+        }
+
+    </script>
+    <br /><br />
+   
+</body>
+</html>

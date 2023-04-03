@@ -1,0 +1,354 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <meta content='IE=Edge' http-equiv='X-UA-Compatible' />
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <style>
+        #video-container {
+            position: absolute;
+            /*background-color: black;*/
+            border: none;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .btn {
+            background-color: #EE1A4A;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+            /* Darker background on mouse-over */
+            .btn:hover {
+                background-color: #EE1A4A;
+                font-size: 14px;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div id="video-container"><div><button onclick="Exit()" class="btn"><i class="fa fa-close"></i> Close</button>&nbsp&nbsp&nbsp&nbsp<!--<button onclick="openDateScreen()" class="btn"><i class="fa fa-calendar"></i> Date Screen</button>--></div></div>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+    <!--<script>
+        var savePlaysarr = [];
+        var respDblist;
+        var arrayVideos = [];
+        var isLoadWindow = 0;
+        var loopIndex = 0;
+        var videotime = [];
+        //$(document).ready(function () {
+        //    GetloopVideos();
+        //});
+        var testid;
+        var playMovie = function (player, videos, options) {
+            alert("inside play movie function");
+            //alert(videos.length);
+            //alert(videos[0]);
+            if (!videos.length) {
+                return false;
+            }
+            console.log(videos);
+            var video = 'https://vimeo.com/' + videos.shift();
+            alert(video);
+            if (!player) {
+                options.url = video;
+                //console.log(video, 'video*URL');
+                testid = video;
+                player = new Vimeo.Player('video-container', options);
+                player.play();
+                //  toggleFullScreen();
+                player.on('ended', function () {
+                    playMovie(player, videos, options)
+                })
+            } else {
+                console.log(video);
+                testid = video;
+                const idd = video.split("/");
+                var videoid = idd[3];
+                alert("next is video id");
+                alert(videoid);
+                player.loadVideo(videoid)
+                    .then(function () {
+                        console.log(arrayVideos);
+                        player.play();
+                    })
+                    .catch(function (error) {
+                        console.log(testid + '*');
+                        GetloopVideos();
+                        console.warn(error);
+                    });
+            }
+            player.getEnded(true).then(function (ended) {
+                // `ended` indicates whether the video has ended
+                if (videos.length == 3) {
+                    var respDateTime = GetPlaysTime();
+                    videotime.push(respDateTime);
+                }
+                else if (videos.length == 2) {
+                    var respDateTime = GetPlaysTime();
+                    videotime.push(respDateTime);
+                }
+                else if (videos.length == 1) {
+                    var respDateTime = GetPlaysTime();
+                    videotime.push(respDateTime);
+                }
+                else if (videos.length == 0) {
+                    isLoadWindow = 1;
+                    loopIndex++;
+                    GetloopVideos();
+                    SavePlays(respDblist);
+                }
+            });
+        }
+        function GetPlaysTime() {
+            var date = new Date();
+            FormatedDate = moment(date).format("yyyy-MM-DDTHH:mm:ss");
+            return FormatedDate;
+        }
+
+        function SavePlays(data) {
+            alert("inside save plays");
+            console.log(data);
+            savePlaysarr = [];
+            data.VideosLists.map(function (val, index) {
+                if (val.VSVAccountID != null) {
+                    var obj = {
+                        VSVAccountID: val.VSVAccountID,
+                        VidId: val.VidId,
+                        PlayTimeStamp: videotime[0]
+                    }
+                    videotime.shift();
+                    savePlaysarr.push(obj);
+                }
+            })
+            if (savePlaysarr.length > 0) {
+                window.external.SavePlaysVideos(JSON.stringify(savePlaysarr));
+            }
+        }
+        function logout() {
+            $.ajax({
+                type: "POST",
+                url: ApiUrl + '/Home/logout',
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data, status) {
+                    window.location.href = "/";
+                },
+                error: function (data, status) {
+                }
+            });
+            return false;
+        }
+        function toggleFullScreen() {
+            var element = document.getElementById("video-container");
+            element.requestFullscreen();
+        }
+        function GetloopVideos() {
+            arrayVideos = [];
+            var options = {
+                width: "1400",
+                height: "700"
+            };
+            var EntertainmentVideosResponsee = window.external.GetEntertainmentVideos(loopIndex);
+            var EntertainmentVideosResponse = JSON.parse(EntertainmentVideosResponsee);
+            if (EntertainmentVideosResponse != null) {
+                nn(EntertainmentVideosResponse);
+            }
+            function nn(EntertainmentVideosResponse) {
+                alert("inside n funtion");
+                respDblist = EntertainmentVideosResponse;
+
+                EntertainmentVideosResponse.VideosLists.map(function (val, index) {
+
+                    arrayVideos.push(val.VideoId);
+
+                })
+                if (EntertainmentVideosResponse.LoopEnded == true) {
+                    alert("loop ended true");
+                    loopIndex = 0;
+                }
+                if (isLoadWindow === 1) {
+                    arrayVideos.unshift(isLoadWindow);
+                    alert("at load window function is called")
+                    playMovie(null, arrayVideos, options)
+                } else {
+                    alert("yahan hn");
+                    playMovie(null, arrayVideos, options)
+                }
+            }
+        }
+        GetloopVideos();
+    </script>-->
+    <script>
+        //var videoss = window.external.getVideoIds();
+        //var ssDbTime = window.external.getStartTime();
+        //var eeDbTime = window.external.getEndTime();
+        ////var videos = videoss.split(",");
+        //var savePlaysarr = [];
+        //var respDblist;
+        //var arrayVideos = [];
+        //var isLoadWindow = 0;
+        //var loopIndex = 0;
+        //var videotime = [];
+        //var now = new Date();
+        //var currentTime = now.toISOString();
+        //console.log(currentTime);
+        //var nowDate = currentTime.split('T')[0];
+        ////var startTime = new Date(nowDate + "T11:55");
+        ////var endTime = new Date(nowDate + "T13:03");
+        //var sDbTime = "T";
+        //sDbTime += ssDbTime;
+        //var startTime = new Date(nowDate + sDbTime);
+        ////alert(startTime);
+        //var eDbTime = "T";
+        //eDbTime += eeDbTime;
+        //var endTime = new Date(nowDate + eDbTime);
+        //////////
+        ////if(currenttime>=Starttime&&currenttime<=StopTime){playMovie(null, videos, options);} else{stopplaying or exit};
+        //var playMovie = function (player, videos, options, startTime, endTime) { // get startTime and endTime
+        //    // get currentTime here
+        //    //debugger;
+        //    alert("inside play movies function");
+        //    ssDbTime = window.external.getStartTime();
+        //    eeDbTime = window.external.getEndTime();
+        //    sDbTime = "T";
+        //    sDbTime += ssDbTime;
+        //    startTime = new Date(nowDate + sDbTime);
+        //    eDbTime = "T";
+        //    eDbTime += eeDbTime;
+        //    endTime = new Date(nowDate + eDbTime);
+        //    now = new Date();
+        //    currentTime = now.toISOString();
+        //    nowDate = currentTime.split('T')[0];
+        //    // add if-else to check for currentTime is between startTime and endTime
+        //    if (Date.parse(currentTime) > Date.parse(startTime) && Date.parse(currentTime) < Date.parse(endTime)) {
+        //        if (!videos.length) {
+        //            return false;
+        //        }
+        //        console.log(videos);
+        //        var video = 'https://vimeo.com/' + videos.shift();
+        //        //var video = videos.shift();
+
+        //        if (!player) {
+
+        //            options.url = video;
+        //            console.log(video, 'video*URL');
+        //            testid = video;
+        //            player = new Vimeo.Player('video-container', options);
+
+        //            player.play();
+
+        //            player.on('ended', function () {
+
+        //                playMovie(player, videos, options, startTime, endTime) // pass startTime and endTime
+        //            })
+        //        } else {
+        //            console.log(video);
+
+        //            testid = video;
+        //            const idd = video.split("/");
+
+        //            var videoid = idd[3];
+
+        //            player.loadVideo(videoid)
+        //                .then(function () {
+
+        //                    player.play();
+        //                })
+        //                .catch(function (error) {
+        //                    console.log(testid + '*');
+        //                    GetloopVideos();
+        //                    console.warn(error);
+        //                })
+        //        }
+        //        player.getEnded(true).then(function (ended) {
+
+        //            if (videos.length == 3) {
+        //                var respDateTime = GetPlaysTime();
+        //                videotime.push(respDateTime);
+        //            }
+        //            else if (videos.length == 2) {
+        //                var respDateTime = GetPlaysTime();
+        //                videotime.push(respDateTime);
+        //            }
+        //            else if (videos.length == 1) {
+        //                var respDateTime = GetPlaysTime();
+        //                videotime.push(respDateTime);
+        //            }
+        //            else if (videos.length == 0) {
+        //                isLoadWindow = 1;
+        //                loopIndex++;
+        //                GetloopVideos();
+        //                SavePlays(respDblist);
+        //            }
+        //        });
+        //    }
+        //    else {
+        //        console.log("Time is up");
+        //        //alert("Your Business Hours are Completed");
+        //        setInterval(playMovie, 300000, null, videos, options, startTime, endTime);
+        //    }
+        //}
+        function GetPlaysTime() {
+            var date = new Date();
+            FormatedDate = moment(date).format("yyyy-MM-DDTHH:mm:ss");
+            //alert(FormatedDate);
+            return FormatedDate;
+        }
+        var options = {
+            width: "1400",
+            height: "700"
+        };
+        //playMovie(null, videos, options, startTime, endTime);
+        function GetloopVideos() {
+            arrayVideos = [];
+            var EntertainmentVideosResponsee = window.external.GetEntertainmentVideos(loopIndex);
+            var EntertainmentVideosResponse = JSON.parse(EntertainmentVideosResponsee);
+            if (EntertainmentVideosResponse != null) {
+                nn(EntertainmentVideosResponse);
+            }
+            function nn(EntertainmentVideosResponse) {
+                alert("inside n funtion");
+                respDblist = EntertainmentVideosResponse;
+
+                EntertainmentVideosResponse.VideosLists.map(function (val, index) {
+
+                    arrayVideos.push(val.VideoId);
+
+                })
+                if (EntertainmentVideosResponse.LoopEnded == true) {
+                    alert("loop ended true");
+                    loopIndex = 0;
+                }
+                if (isLoadWindow === 1) {
+                    arrayVideos.unshift(isLoadWindow);
+                    alert("at load window function is called")
+                    playMovie(null, arrayVideos, options)
+                } else {
+                    alert("yahan hn");
+                    playMovie(null, arrayVideos, options)
+                }
+            }
+        }
+        GetloopVideos();
+        function Exit() {
+            window.external.Exit();
+        }
+        function openDateScreen() {
+            window.external.openDateScreen();
+        }
+    </script>
+</body>
+</html>
