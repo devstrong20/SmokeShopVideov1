@@ -17,24 +17,26 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <PublishUrl>D:\SmokeVideoShop\</PublishUrl>
+    <PublishUrl>D:\Shiraz\WebBrowser_HTML_File v1\published\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <UpdateUrl>https://raw.githubusercontent.com/toheedafzaal/VimeoVSVApp/main/published/</UpdateUrl>
+    <UpdateUrl>https://raw.githubusercontent.com/devstrong20/SmokeShopVideov1/master/published/</UpdateUrl>
     <SupportUrl>https://www.panacealogics.com/</SupportUrl>
     <ErrorReportUrl>https://www.panacealogics.com/</ErrorReportUrl>
     <ProductName>Smoke Shop Video</ProductName>
     <PublisherName>Panacealogics</PublisherName>
     <SuiteName>Shiraz Ahmed</SuiteName>
+    <MinimumRequiredVersion>1.0.0.8</MinimumRequiredVersion>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>8</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
