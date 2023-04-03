@@ -145,7 +145,7 @@ namespace SmokeShopVideo
 
             if (e.newState == 3)
             {
-              //  MediaPlayer.fullScreen = true;
+                MediaPlayer.fullScreen = true;
                 string fileName = Path.GetFileName(MediaPlayer.currentMedia.sourceURL);
                 string path = Path.GetDirectoryName(MediaPlayer.currentMedia.sourceURL);
                 string[] parts = fileName.Split('.');
