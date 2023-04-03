@@ -318,7 +318,7 @@ namespace SmokeShopVideo
             }
             return "";
         }
-        public List<string> GetEntertainmentVideos() //new function with minor changes
+        public List<string> GetEntertainmentVideos() 
         {
             var VideosList = new List<String>();
             int accountId = AccountId;
