@@ -49,8 +49,11 @@ namespace SmokeShopVideo
         public Form1()
         {
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;   
-            MediaPlayer.uiMode = "full";
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+            menuStrip1.Visible = false;
+            MediaPlayer.uiMode = "none";
+            MediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(EscKey);
             MediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(PlayStateChange);
         }
 
@@ -146,6 +149,7 @@ namespace SmokeShopVideo
             if (e.newState == 3)
             {
                 MediaPlayer.fullScreen = true;
+
                 string fileName = Path.GetFileName(MediaPlayer.currentMedia.sourceURL);
                 string path = Path.GetDirectoryName(MediaPlayer.currentMedia.sourceURL);
                 string[] parts = fileName.Split('.');
@@ -165,14 +169,15 @@ namespace SmokeShopVideo
                         EndTime = DateTimeOffset.Parse(etime).UtcDateTime;
                     }
                 }
-                catch(Exception ex) 
+                catch 
                 {
-                    LogException(ex);
+                    
                 }
             }
 
             else if(e.newState == 8)
             {
+
                 if (now > StartTime && now < EndTime && videofilename == "Logo")
                 {
                     new ToastContentBuilder().AddArgument("action", "viewConversation")
@@ -186,12 +191,15 @@ namespace SmokeShopVideo
 
             else if(e.newState == 10)
             {
+                
                 timer1.Start();
+               
             }
         }
 
         private void LoadNewPlaylist()
         {
+            
             count = 0;
             //functionCalled = true;
             FilteredVideos.Clear();
@@ -209,6 +217,7 @@ namespace SmokeShopVideo
 
         public void LoadLogo()
         {
+            
             MediaPlayer.currentPlaylist.clear();
             MediaPlayer.settings.setMode("loop",true);
             var playlist = MediaPlayer.playlistCollection.newPlaylist("New Playlist");
@@ -219,7 +228,7 @@ namespace SmokeShopVideo
 
         private void TimerEvent(object sender, EventArgs e)
         {
-            
+            MediaPlayer.uiMode = "none";
             foreach (string folderName in folderNames)
             {
 
@@ -230,15 +239,15 @@ namespace SmokeShopVideo
             }
             if (existingFolders.Count > 2)
             {
-                if (existingFolders.Count == 3)
-                {
-                    new ToastContentBuilder()
-                    .AddArgument("action", "viewConversation")
-                    .AddText("Directories Found")
-                    .AddText("Please Wait, While we Connect :).")
-                    .Show();
+                //if (existingFolders.Count == 3)
+                //{
+                //    new ToastContentBuilder()
+                //    .AddArgument("action", "viewConversation")
+                //    .AddText("Directories Found")
+                //    .AddText("Please Wait, While we Connect :).")
+                //    .Show();
 
-                }
+                //}
                 try
                 {
 
@@ -258,13 +267,10 @@ namespace SmokeShopVideo
                         else if (now < StartTime || now > EndTime && videofilename != "Logo")
                         {
                             LoadLogo();
-                            new ToastContentBuilder().AddArgument("action", "viewConversation")
-                            .AddText("Sleep Mode")
-                            .AddText("App is Sleeping :).")
-                            .Show();
                         }
                         timer1.Stop();
                         MediaPlayer.Ctlcontrols.play();
+                        MediaPlayer.uiMode = "full";
                         successEx();
                     }
                 }
@@ -750,6 +756,17 @@ namespace SmokeShopVideo
         private void AboutUs(object sender, EventArgs e)
         {
             MessageBox.Show("420 Friendly Smoke Shop", "Smoke Shop Video", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
+        private void EscKey(object sender, AxWMPLib._WMPOCXEvents_KeyUpEvent e)
+        {
+            if(e.nKeyCode == (short)Keys.Escape)
+            {
+                MediaPlayer.Ctlcontrols.stop();
+                menuStrip1.Visible = true;
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+            }
         }
     }
 
