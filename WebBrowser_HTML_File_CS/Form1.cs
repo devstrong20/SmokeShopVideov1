@@ -45,6 +45,7 @@ namespace SmokeShopVideo
         public static DateTime StartTime = DateTime.Now;
         public static DateTime EndTime = DateTime.Now;
         public static DateTime Day = DateTime.Today;
+        public static string playlistFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\Playlists";
         public static string[] folderNames = { MusicV, IO, Products };
         public static List<string> existingFolders = new List<string>();
 
@@ -77,6 +78,13 @@ namespace SmokeShopVideo
                 var accid = subs[1].ToString();
                 accid = accid.Substring(0, accid.Length - 2);
                 AccountId = Int16.Parse(accid);
+                
+                if (Directory.Exists(playlistFolder))
+                {
+                    Directory.Delete(playlistFolder, true);
+                    
+                }
+
                 string Message = "Email Check Succeed";
                 //SendEmail(Message);
                 timer1.Start();
@@ -252,22 +260,19 @@ namespace SmokeShopVideo
         private void LoadNewPlaylist()
         {
             
-            count = 0;
-            //functionCalled = true;
-            var playlists = MediaPlayer.playlistCollection.getAll();
-            for (int i = 0; i < playlists.count; i++)
+            count += 1;
+            if (count > 3)
             {
-                var play = playlists.Item(i);
-                if (play.name == "New Playlist")
-                {
-                    MediaPlayer.playlistCollection.remove(play);
-                }
+                Directory.Delete(playlistFolder, true);
+                count = 1;
             }
-
+            //functionCalled = true;
+            var oldplaylist = MediaPlayer.currentPlaylist;
+            MediaPlayer.playlistCollection.remove(oldplaylist);
             FilteredVideos.Clear();
             MediaPlayer.currentPlaylist.clear();
             FilteredVideos = GetEntertainmentVideos();
-            var playlist = MediaPlayer.playlistCollection.newPlaylist("New Playlist"); // Create a new playlist
+            var playlist = MediaPlayer.playlistCollection.newPlaylist("New Playlist " + count); // Create a new playlist
             foreach (string videoPath in FilteredVideos) // Add each video to the playlist in the desired order
             {
                 var media = MediaPlayer.newMedia(videoPath);
@@ -275,6 +280,7 @@ namespace SmokeShopVideo
             }
             MediaPlayer.currentPlaylist = playlist; // Set the current playlist to the new playlist
             //MediaPlayer.Ctlcontrols.play();
+           
         }
 
         public void LoadLogo()
