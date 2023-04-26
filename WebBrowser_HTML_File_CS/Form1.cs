@@ -23,6 +23,8 @@ using System.Data.Common;
 using System.Threading;
 using Windows.UI.Notifications;
 using Microsoft.Toolkit.Uwp.Notifications;
+using System.Net.Mail;
+using System.Net;
 
 namespace SmokeShopVideo
 {
@@ -59,49 +61,89 @@ namespace SmokeShopVideo
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string FilePath = ConfigurationManager.AppSettings["LogPath"];
-            //string fileName = @"C:\Temp\SmSpVimeo\Vimeo\dontDelete3.txt";
             
-            var uid = "";
-            uid = File.ReadAllText(FilePath);
-            char[] separators = new char[] { ' ', '$' };
+            try
+            {
+                string FilePath = ConfigurationManager.AppSettings["LogPath"];
+                //string fileName = @"C:\Temp\SmSpVimeo\Vimeo\dontDelete3.txt";
 
-            string[] subs = uid.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                var uid = "";
+                uid = File.ReadAllText(FilePath);
+                char[] separators = new char[] { ' ', '$' };
 
-            userid = subs[0];
-            var accid = subs[1].ToString();
-            accid = accid.Substring(0, accid.Length - 2);
-            AccountId = Int16.Parse(accid);
-            timer1.Start();
+                string[] subs = uid.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+                userid = subs[0];
+                var accid = subs[1].ToString();
+                accid = accid.Substring(0, accid.Length - 2);
+                AccountId = Int16.Parse(accid);
+                string Message = "Email Check Succeed";
+                //SendEmail(Message);
+                timer1.Start();
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                SendEmail(message);
+            }
         }
 
+        private void SendEmail(string message)
+        {
+            // Configure your email settings here
+    //        SmtpClient client = new SmtpClient("a2plcpnl0522.prod.iad2.secureserver.net", 465);
+    //        client.UseDefaultCredentials = false;
+    //        client.EnableSsl = true;
+    //        client.Credentials = new NetworkCredential("notifications@panacealogics.com", "");
+
+    //        // Configure the message
+    //        MailMessage mail = new MailMessage();
+    //        mail.From = new MailAddress("notifications@panacealogics.com");
+    ////        mail.To.Add("adeel.pirzada@panacealogics.com");
+    //        mail.To.Add("shiraz.ahmed@panacealogics.com");
+    //        mail.Subject = "Exception occurred";
+    //        mail.Body = message;
+
+    //        // Send the message
+    //        client.Send(mail);
+        }
         public string getStartTime()
         {
             DayOfWeek wk = DateTime.Today.DayOfWeek;
             var starttime = "";
-            switch (wk)
+            try
             {
-                case DayOfWeek.Monday:
-                    starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.MonStart).FirstOrDefault();
-                    break;
-                case DayOfWeek.Tuesday:
-                    starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.TueStart).FirstOrDefault();
-                    break;
-                case DayOfWeek.Wednesday:
-                    starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.WedStart).FirstOrDefault();
-                    break;
-                case DayOfWeek.Thursday:
-                    starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.ThurStart).FirstOrDefault();
-                    break;
-                case DayOfWeek.Friday:
-                    starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.FriStart).FirstOrDefault();
-                    break;
-                case DayOfWeek.Saturday:
-                    starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SatStart).FirstOrDefault();
-                    break;
-                case DayOfWeek.Sunday:
-                    starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SunStart).FirstOrDefault();
-                    break;
+                switch (wk)
+                {
+                    case DayOfWeek.Monday:
+                        starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.MonStart).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Tuesday:
+                        starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.TueStart).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Wednesday:
+                        starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.WedStart).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Thursday:
+                        starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.ThurStart).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Friday:
+                        starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.FriStart).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Saturday:
+                        starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SatStart).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Sunday:
+                        starttime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SunStart).FirstOrDefault();
+                        break;
+                }
+            }
+            catch(Exception es)
+            {
+                string message = "Exception Message: " + es.Message + Environment.NewLine + "Stack Trace: " + es.StackTrace;
+                SendEmail(message);
             }
             return starttime;
         }
@@ -109,29 +151,38 @@ namespace SmokeShopVideo
         {
             DayOfWeek wk = DateTime.Today.DayOfWeek;
             var stoptime = "";
-            switch (wk)
+            try 
             {
-                case DayOfWeek.Monday:
-                    stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.MonStop).FirstOrDefault();
-                    break;
-                case DayOfWeek.Tuesday:
-                    stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.TueStop).FirstOrDefault();
-                    break;
-                case DayOfWeek.Wednesday:
-                    stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.WedStop).FirstOrDefault();
-                    break;
-                case DayOfWeek.Thursday:
-                    stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.ThurStop).FirstOrDefault();
-                    break;
-                case DayOfWeek.Friday:
-                    stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.FriStop).FirstOrDefault();
-                    break;
-                case DayOfWeek.Saturday:
-                    stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SatStop).FirstOrDefault();
-                    break;
-                case DayOfWeek.Sunday:
-                    stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SunStop).FirstOrDefault();
-                    break;
+                switch (wk)
+                {
+                    case DayOfWeek.Monday:
+                        stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.MonStop).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Tuesday:
+                        stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.TueStop).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Wednesday:
+                        stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.WedStop).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Thursday:
+                        stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.ThurStop).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Friday:
+                        stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.FriStop).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Saturday:
+                        stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SatStop).FirstOrDefault();
+                        break;
+                    case DayOfWeek.Sunday:
+                        stoptime = pubsEntities.VSVAccounts.Where(x => x.UserID == userid).Select(x => x.SunStop).FirstOrDefault();
+                        break;
+                }
+            }
+           
+            catch(Exception es)
+                {
+                string message = "Exception Message: " + es.Message + Environment.NewLine + "Stack Trace: " + es.StackTrace;
+                SendEmail(message);
             }
             return stoptime;
         }
@@ -140,7 +191,7 @@ namespace SmokeShopVideo
 
 
 
-
+        
 
         private void PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
@@ -169,9 +220,10 @@ namespace SmokeShopVideo
                         EndTime = DateTimeOffset.Parse(etime).UtcDateTime;
                     }
                 }
-                catch 
+                catch(Exception es) 
                 {
-                    
+                    string message = "Exception Message: " + es.Message + Environment.NewLine + "Stack Trace: " + es.StackTrace;
+                    SendEmail(message);
                 }
             }
 
@@ -202,6 +254,16 @@ namespace SmokeShopVideo
             
             count = 0;
             //functionCalled = true;
+            var playlists = MediaPlayer.playlistCollection.getAll();
+            for (int i = 0; i < playlists.count; i++)
+            {
+                var play = playlists.Item(i);
+                if (play.name == "New Playlist")
+                {
+                    MediaPlayer.playlistCollection.remove(play);
+                }
+            }
+
             FilteredVideos.Clear();
             MediaPlayer.currentPlaylist.clear();
             FilteredVideos = GetEntertainmentVideos();
@@ -239,15 +301,7 @@ namespace SmokeShopVideo
             }
             if (existingFolders.Count > 2)
             {
-                //if (existingFolders.Count == 3)
-                //{
-                //    new ToastContentBuilder()
-                //    .AddArgument("action", "viewConversation")
-                //    .AddText("Directories Found")
-                //    .AddText("Please Wait, While we Connect :).")
-                //    .Show();
-
-                //}
+                
                 try
                 {
 
@@ -268,7 +322,7 @@ namespace SmokeShopVideo
                         {
                             LoadLogo();
                         }
-                        timer1.Stop();
+                 
                         MediaPlayer.Ctlcontrols.play();
                         MediaPlayer.uiMode = "full";
                         successEx();
@@ -277,10 +331,15 @@ namespace SmokeShopVideo
 
                 catch (Exception es)
                 {
-                    timer1.Stop();
+                    
                     LogException(es);
-                    LoadNewPlaylist();
-                    MediaPlayer.Ctlcontrols.play();
+                    string message = "Exception Message: " + es.Message + Environment.NewLine + "Stack Trace: " + es.StackTrace;
+                    SendEmail(message);
+                    timer1.Start();
+                }
+                finally
+                {
+                    timer1.Stop();
                 }
             }
             else
@@ -297,7 +356,8 @@ namespace SmokeShopVideo
                     Application.Exit();
                 }
             }
-            
+            existingFolders.Clear();
+
         }
         public string SavePlaysVideos(string VideoID)
         {
@@ -320,9 +380,11 @@ namespace SmokeShopVideo
             catch (Exception ex)
             {
                 LogException(ex);
-                return "";
+                string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                SendEmail(message);
             }
             return "";
+            
         }
         public List<string> GetEntertainmentVideos() 
         {
@@ -361,6 +423,8 @@ namespace SmokeShopVideo
                         catch (Exception ex)
                         {
                             LogException(ex);
+                            string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                            SendEmail(message);
                         }
                     }
                     else
@@ -384,10 +448,9 @@ namespace SmokeShopVideo
                         catch (Exception ex)
                         {
                             LogException(ex);
-                            return null;
-                        }   
-                        
-
+                            string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                            SendEmail(message);
+                        }
                     }
 
                     // VsvShop Intro video //
@@ -414,7 +477,8 @@ namespace SmokeShopVideo
                         catch (Exception ex)
                         {
                             LogException(ex);
-                            return null;
+                            string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                            SendEmail(message);
                         }
 
                     }
@@ -439,7 +503,8 @@ namespace SmokeShopVideo
                         catch (Exception ex)
                         {
                             LogException(ex);
-                            return null;
+                            string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                            SendEmail(message);
                         }
                         
 
@@ -473,7 +538,8 @@ namespace SmokeShopVideo
                             catch(Exception ex)
                             {
                                 LogException(ex);
-                                return null;
+                                string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                                SendEmail(message);
                             }
 
                         }
@@ -501,7 +567,8 @@ namespace SmokeShopVideo
                             catch(Exception ex)
                             {
                                 LogException(ex);
-                                return null;
+                                string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                                SendEmail(message);
                             }
 
                         }
@@ -530,7 +597,8 @@ namespace SmokeShopVideo
                             catch(Exception ex) 
                             {
                                 LogException(ex);
-                                return null;
+                                string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                                SendEmail(message);
                             }
                         }
 
@@ -559,7 +627,8 @@ namespace SmokeShopVideo
                         catch (Exception ex)
                         {
                             LogException(ex);
-                            return null;
+                            string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                            SendEmail(message);
                         }
 
                     }
@@ -584,7 +653,8 @@ namespace SmokeShopVideo
                         catch  (Exception ex)
                         {
                             LogException(ex);
-                            return null;
+                            string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                            SendEmail(message);
                         }
                         
                     }
@@ -598,6 +668,8 @@ namespace SmokeShopVideo
             catch (Exception ex)
             {
                 LogException(ex);
+                string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                SendEmail(message);
                 return GetEntertainmentVideos2();
             }
         }
@@ -708,10 +780,13 @@ namespace SmokeShopVideo
                 VideosList.Add(files[0]);
                 return VideosList;
             }
-            catch(Exception es)
+            catch(Exception ex)
             {
-                LogException(es);
+                LogException(ex);
+                string message = "Exception Message: " + ex.Message + Environment.NewLine + "Stack Trace: " + ex.StackTrace;
+                SendEmail(message);
                 return GetEntertainmentVideos();
+
             }
         }
 
