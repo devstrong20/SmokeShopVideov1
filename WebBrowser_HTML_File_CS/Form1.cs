@@ -422,7 +422,7 @@ namespace SmokeShopVideo
                             {
                                 VideosList.Add(firstFile);
                             }
-                            else
+                            else if(!File.Exists(firstFile))
                             {
                                 LogException2(respRandomNumMusic , MusicV);
                             }
@@ -443,7 +443,7 @@ namespace SmokeShopVideo
                                      .Where(file => file.ToLower().EndsWith("mp4") && Path.GetFileNameWithoutExtension(file) == respRandomNumMusic)
                                         .ToArray();
                             string firstFile = files.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat == 1)
+                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat != 2)
                             {
                                 VideosList.Add(firstFile);
                             }
@@ -622,11 +622,11 @@ namespace SmokeShopVideo
                                      .Where(file => file.ToLower().EndsWith("mp4") && Path.GetFileNameWithoutExtension(file) == respRandomNumOutro)
                                      .ToArray();
                             string firstFile = files.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && (playFormat != 2))
+                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat != 2)
                             {
                                 VideosList.Add(firstFile);
                             }
-                            else
+                            else if(!File.Exists(firstFile))
                             {
                                 LogException2(respRandomNumOutro, IO);
                             }
@@ -648,7 +648,7 @@ namespace SmokeShopVideo
                                      .Where(file => file.ToLower().EndsWith("mp4") && Path.GetFileNameWithoutExtension(file) == respRandomNumOutro)
                                      .ToArray();
                             string firstFile = files.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat == 1)
+                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat != 2)
                             {
                                 VideosList.Add(firstFile);
                             }
