@@ -447,7 +447,7 @@ namespace SmokeShopVideo
                             {
                                 VideosList.Add(firstFile);
                             }
-                            else
+                            else if (!File.Exists(firstFile))
                             {
                                 LogException2(respRandomNumMusic, MusicV);
                             }
@@ -652,7 +652,7 @@ namespace SmokeShopVideo
                             {
                                 VideosList.Add(firstFile);
                             }
-                            else
+                            else if(!File.Exists(firstFile))
                             {
                                 LogException2(respRandomNumOutro, IO);
                             }
