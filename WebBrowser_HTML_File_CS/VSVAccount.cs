@@ -45,5 +45,6 @@ namespace SmokeShopVideo
         public string SunStop { get; set; }
         public Nullable<int> VideoCount { get; set; }
         public Nullable<int> MusicVideoCount { get; set; }
+        public Nullable<int> PlayFormat { get; set; }
     }
 }

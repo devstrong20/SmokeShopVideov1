@@ -401,6 +401,7 @@ namespace SmokeShopVideo
                 using (var pubsEntities = new pubsEntities2()) 
                 {
                     var Account = pubsEntities.VSVAccounts.FirstOrDefault(x => x.VSVAccountID == accountId);
+                    var playFormat = pubsEntities.VSVAccounts.Where(x => x.VSVAccountID == accountId).Select(x => x.PlayFormat).FirstOrDefault();
                     var Music = Account.MusicVideoCount.ToString();
                     var Intros = Account.VideoCount.ToString();
                     var countProdvideo = pubsEntities.VSVaccountprodvideos.Where(x => x.VSVAccountID == accountId).Count();
@@ -417,7 +418,7 @@ namespace SmokeShopVideo
                                      .Where(file => file.ToLower().EndsWith("mp4") && Path.GetFileNameWithoutExtension(file) == respRandomNumMusic)
                                         .ToArray();
                             string firstFile = files.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile))
+                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat == 1)
                             {
                                 VideosList.Add(firstFile);
                             }
@@ -442,7 +443,7 @@ namespace SmokeShopVideo
                                      .Where(file => file.ToLower().EndsWith("mp4") && Path.GetFileNameWithoutExtension(file) == respRandomNumMusic)
                                         .ToArray();
                             string firstFile = files.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile))
+                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat == 1)
                             {
                                 VideosList.Add(firstFile);
                             }
@@ -621,7 +622,7 @@ namespace SmokeShopVideo
                                      .Where(file => file.ToLower().EndsWith("mp4") && Path.GetFileNameWithoutExtension(file) == respRandomNumOutro)
                                      .ToArray();
                             string firstFile = files.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile))
+                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat == 1)
                             {
                                 VideosList.Add(firstFile);
                             }
@@ -647,7 +648,7 @@ namespace SmokeShopVideo
                                      .Where(file => file.ToLower().EndsWith("mp4") && Path.GetFileNameWithoutExtension(file) == respRandomNumOutro)
                                      .ToArray();
                             string firstFile = files.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile))
+                            if (!string.IsNullOrEmpty(firstFile) && File.Exists(firstFile) && playFormat == 1)
                             {
                                 VideosList.Add(firstFile);
                             }

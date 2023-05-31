@@ -6,15 +6,6 @@
     <edmx:StorageModels>
     <Schema Namespace="pubsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
-warning 6013: The table/view 'pubs.dbo.'2000$'' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="'2000$'">
-          <Property Name="MGID" Type="float" />
-          <Property Name="MusicID" Type="float" />
-          <Property Name="ArtistID" Type="float" />
-          <Property Name="URL" Type="nvarchar" MaxLength="255" />
-          <Property Name="Title" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'pubs.dbo.CSActiveProducts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CSActiveProducts">
           <Key>
@@ -262,24 +253,6 @@ warning 6002: The table/view 'pubs.dbo.CSUser' does not have a primary key defin
           <Property Name="CreationDate" Type="datetime" />
           <Property Name="MarketID" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'pubs.dbo.EV1000$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="EV1000$">
-          <Property Name="MGID" Type="float" />
-          <Property Name="MusicID" Type="float" />
-          <Property Name="ArtistID" Type="float" />
-          <Property Name="URL" Type="nvarchar" MaxLength="255" />
-          <Property Name="Title" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'pubs.dbo.EV3000$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="EV3000$">
-          <Property Name="MGID" Type="float" />
-          <Property Name="MusicID" Type="float" />
-          <Property Name="ArtistID" Type="float" />
-          <Property Name="URL" Type="nvarchar" MaxLength="255" />
-          <Property Name="Title" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'pubs.dbo.GeneralSetting' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GeneralSetting">
@@ -535,26 +508,6 @@ warning 6002: The table/view 'pubs.dbo.Products' does not have a primary key def
           <Property Name="IsStop" Type="int" Nullable="false" />
           <Property Name="CreatedTimestamp" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'pubs.dbo.Sheet1$' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Sheet1$">
-          <Property Name="MGID" Type="float" />
-          <Property Name="MusicID" Type="float" />
-          <Property Name="ArtistID" Type="float" />
-          <Property Name="URL" Type="nvarchar" MaxLength="255" />
-          <Property Name="Title" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'pubs.dbo.Storelocator' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Storelocator">
-          <Property Name="WebSiteID" Type="smallint" />
-          <Property Name="StoreName" Type="varchar" MaxLength="50" />
-          <Property Name="StoreAddress" Type="varchar" MaxLength="128" />
-          <Property Name="StoreCity" Type="varchar" MaxLength="50" />
-          <Property Name="StoreState" Type="char" MaxLength="2" />
-          <Property Name="StoreZip" Type="char" MaxLength="5" />
-          <Property Name="StorePhone" Type="char" MaxLength="12" />
-        </EntityType>-->
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -832,6 +785,7 @@ warning 6002: The table/view 'pubs.dbo.VSVAccount' does not have a primary key d
           <Property Name="SunStop" Type="char" MaxLength="5" />
           <Property Name="VideoCount" Type="int" />
           <Property Name="MusicVideoCount" Type="int" />
+          <Property Name="PlayFormat" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'pubs.dbo.VSVaccountprodvideo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2015,7 +1969,8 @@ warning 6002: The table/view 'pubs.dbo.VSVuserVid1' does not have a primary key 
     [VSVAccount].[SunStart] AS [SunStart], 
     [VSVAccount].[SunStop] AS [SunStop], 
     [VSVAccount].[VideoCount] AS [VideoCount], 
-    [VSVAccount].[MusicVideoCount] AS [MusicVideoCount]
+    [VSVAccount].[MusicVideoCount] AS [MusicVideoCount], 
+    [VSVAccount].[PlayFormat] AS [PlayFormat]
     FROM [dbo].[VSVAccount] AS [VSVAccount]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VSVaccountprodvideo" EntityType="Self.VSVaccountprodvideo" store:Type="Tables" store:Schema="dbo">
@@ -2987,6 +2942,7 @@ warning 6002: The table/view 'pubs.dbo.VSVuserVid1' does not have a primary key 
           <Property Name="SunStop" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
           <Property Name="VideoCount" Type="Int32" />
           <Property Name="MusicVideoCount" Type="Int32" />
+          <Property Name="PlayFormat" Type="Int32" />
         </EntityType>
         <EntityType Name="VSVaccountprodvideo">
           <Key>
@@ -4351,6 +4307,7 @@ warning 6002: The table/view 'pubs.dbo.VSVuserVid1' does not have a primary key 
           <EntitySetMapping Name="VSVAccounts">
             <EntityTypeMapping TypeName="pubsModel.VSVAccount">
               <MappingFragment StoreEntitySet="VSVAccount">
+                <ScalarProperty Name="PlayFormat" ColumnName="PlayFormat" />
                 <ScalarProperty Name="MusicVideoCount" ColumnName="MusicVideoCount" />
                 <ScalarProperty Name="VideoCount" ColumnName="VideoCount" />
                 <ScalarProperty Name="VSVAccountID" ColumnName="VSVAccountID" />
